@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-<title>Chúc Mừng Sinh Nhật bồ 🎉</title>
+<title>Chúc Mừng Sinh Nhật 💖</title>
 
 <style>
     body {
@@ -18,8 +18,6 @@
         justify-content: center;
         align-items: center;
         font-family: -apple-system, BlinkMacSystemFont, Arial;
-        padding: env(safe-area-inset-top) env(safe-area-inset-right)
-                 env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     @keyframes bgMove {
@@ -27,7 +25,7 @@
         100% { background-position: 100% 50%; }
     }
 
-    /* TRÁI TIM RỰC RỠ */
+    /* TRÁI TIM LỚN */
     .heart {
         width: min(35vw, 200px);
         height: min(35vw, 200px);
@@ -36,6 +34,7 @@
         transform: rotate(-45deg);
         animation: heartbeat 1.4s infinite, glow 2s infinite alternate;
         filter: drop-shadow(0 0 15px #ff1a75);
+        display: none;
     }
 
     .heart:before,
@@ -48,19 +47,12 @@
         position: absolute;
     }
 
-    .heart:before {
-        top: calc(-0.5 * min(35vw, 200px));
-        left: 0;
-    }
-
-    .heart:after {
-        left: calc(0.5 * min(35vw, 200px));
-        top: 0;
-    }
+    .heart:before { top: calc(-0.5 * min(35vw, 200px)); left: 0; }
+    .heart:after { left: calc(0.5 * min(35vw, 200px)); top: 0; }
 
     @keyframes heartbeat {
         0% { transform: scale(1) rotate(-45deg); }
-        50% { transform: scale(1.2) rotate(-45deg); }
+        50% { transform: scale(1.25) rotate(-45deg); }
         100% { transform: scale(1) rotate(-45deg); }
     }
 
@@ -69,7 +61,7 @@
         100% { filter: drop-shadow(0 0 30px #ff1a75); }
     }
 
-    /* CHỮ CHẠY */
+    /* CHỮ CHẠY – ban đầu ẩn */
     .run-text {
         position: absolute;
         font-size: min(7vw, 32px);
@@ -77,6 +69,7 @@
         color: #ff0077;
         animation: moveText 8s linear infinite;
         white-space: nowrap;
+        display: none;
     }
 
     @keyframes moveText {
@@ -125,6 +118,7 @@
         font-weight: bold;
         cursor: pointer;
         animation: pulse 2s infinite;
+        z-index: 10;
     }
 
     @keyframes pulse {
@@ -132,32 +126,23 @@
         50% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
-
-    #message {
-        position: absolute;
-        bottom: 110px;
-        font-size: 26px;
-        font-weight: bold;
-        color: #ff0088;
-        display: none;
-    }
 </style>
 </head>
 
 <body>
 
-    <div class="heart"></div>
+    <!-- TRÁI TIM LỚN -->
+    <div class="heart" id="bigHeart"></div>
 
-    <!-- 5 DÒNG CHỮ CHẠY -->
-    <div class="run-text" style="top: 20%;">💖 Chúc Mừng Sinh Nhật BTrâm đáng yêu 💖</div>
-    <div class="run-text" style="top: 35%; animation-delay: 1s;">🎂 Chúc em luôn xinh đẹp và hạnh phúc 🎂</div>
-    <div class="run-text" style="top: 50%; animation-delay: 2s;">✨ Gà thương Trâm nhiều lắm ✨</div>
-    <div class="run-text" style="top: 65%; animation-delay: 3s;">🌸 chúc em bình an và hạnh phúc 🌸</div>
-    <div class="run-text" style="top: 80%; animation-delay: 4s;">🎉 Happy Birthday to youuu 🎉</div>
+    <!-- 5 DÒNG CHỮ CHẠY (ẩn trước khi mở quà) -->
+    <div class="run-text" style="top: 20%;" id="t1">💖 Chúc Mừng Sinh Nhật BTrâm đáng yêu 💖</div>
+    <div class="run-text" style="top: 35%;" id="t2">🎂 Chúc em luôn xinh đẹp và hạnh phúc 🎂</div>
+    <div class="run-text" style="top: 50%;" id="t3">✨ Gà thương Trâm nhiều lắm ✨</div>
+    <div class="run-text" style="top: 65%;" id="t4">🌸 Chúc em bình an và hạnh phúc 🌸</div>
+    <div class="run-text" style="top: 80%;" id="t5">🎉 Happy Birthday to youuu 🎉</div>
 
     <!-- HỘP QUÀ -->
     <div id="giftBox">🎁 Mở Quà</div>
-    <div id="message">Anh yêu bé lắmmm 💖✨</div>
 
     <!-- NHẠC -->
     <audio id="music" autoplay loop>
@@ -173,7 +158,6 @@ setInterval(() => {
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = (20 + Math.random() * 20) + "px";
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 4000);
 }, 400);
 
@@ -188,10 +172,17 @@ setInterval(() => {
     setTimeout(() => f.remove(), 600);
 }, 700);
 
-/* HỘP QUÀ HIỆU ỨNG */
+/* HỘP QUÀ CLICK */
 document.getElementById("giftBox").onclick = () => {
-    document.getElementById("message").style.display = "block";
     document.getElementById("giftBox").style.display = "none";
+
+    // Hiện trái tim
+    document.getElementById("bigHeart").style.display = "block";
+
+    // Hiện 5 dòng chữ
+    ["t1","t2","t3","t4","t5"].forEach(id => {
+        document.getElementById(id).style.display = "block";
+    });
 };
 </script>
 
